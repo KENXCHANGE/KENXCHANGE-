@@ -1,1 +1,35 @@
-
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KENXCHANGE - Admin</title>
+  <meta name="description" content="Espace administration KENXCHANGE">
+  <base href="/KENXCHANGE-/">
+  <style>
+    body{font-family:system-ui,Arial;margin:0;padding:1rem;color:#111}
+    header{background:#111;color:#fff;padding:.75rem}
+    main{max-width:900px;margin:1rem auto}
+    .box{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    label{display:block;margin-top:.5rem}
+    input,button{padding:.5rem;margin-top:.25rem}
+  </style>
+</head>
+<body>
+  <header><div style="max-width:1100px;margin:0 auto"><h1 style="margin:0;font-size:1.05rem">KENXCHANGE — Admin</h1></div></header>
+  <main>
+    <div class="box">
+      <h2>Connexion admin</h2>
+      <p>Remplace ce formulaire par ton système d'authentification sécurisé.</p>
+      <form>
+        <label>Utilisateur<input type="text" name="user" /></label>
+        <label>Mot de passe<input type="password" name="pass" /></label>
+        <button type="button" onclick="alert('Login simulé')">Se connecter</button>
+      </form>
+    </div>
+    <p style="margin-top:1rem"><a href="index.html">Retour</a></p>
+  </main>
+  <footer style="text-align:center;color:#666;margin-top:2rem">© KENXCHANGE — Admin</footer>
+  <script>console.log('Admin page chargée');</script>
+</body>
+</html>
