@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="16" fill="#0b5cff"/>
+  <g transform="translate(22,28)" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 34 L44 34" />
+    <path d="M44 34 L38 28" />
+    <path d="M44 34 L38 40" />
+    <path d="M36 10 L72 10" />
+    <path d="M36 10 L42 4" />
+    <path d="M36 10 L42 16" />
+  </g>
+  <text x="60" y="103" font-size="12" font-family="Arial,Helvetica,sans-serif" fill="#ffffff" text-anchor="middle">KENXCHANGE</text>
+</svg>

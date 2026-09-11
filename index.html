@@ -3,74 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>KENXCHANGE - Accueil</title>
-  <meta name="description" content="Site de démonstration KENXCHANGE">
-  <!-- Open Graph -->
-  <meta property="og:title" content="KENXCHANGE - Accueil">
-  <meta property="og:description" content="Site de démonstration KENXCHANGE">
-  <meta property="og:url" content="https://kenxchange.github.io/KENXCHANGE-/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="KENXCHANGE - Accueil">
-  <meta name="twitter:description" content="Site de démonstration KENXCHANGE">
-  <meta name="twitter:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
-  <!-- base href is required for project sites hosted under a subpath on GitHub Pages -->
+  <title>KENXCHANGE — Échangez vos devises</title>
+  <meta name="description" content="Échangez vos devises simplement, rapidement et en toute transparence.">
   <base href="/KENXCHANGE-/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
-    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;}
-    body{margin:0;color:#111;line-height:1.45;padding:0 1rem}
-    header{background:#0b5cff;color:#fff;padding:1rem}
-    nav a{color:#fff;text-decoration:none;margin-right:1rem}
-    main{max-width:900px;margin:1.25rem auto;padding:0 1rem}
-    .card{background:#f8f9ff;border-radius:8px;padding:1rem;margin-top:1rem}
-    footer{color:#666;font-size:.9rem;text-align:center;margin:2rem 0}
-    @media (max-width:600px){header h1{font-size:1.25rem}} 
-    a.button{display:inline-block;background:#0b5cff;color:#fff;padding:.5rem .75rem;border-radius:6px;text-decoration:none}
+    :root{--blue:#0b5cff;--bg:#f7f8fb;font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+    html,body{height:100%;margin:0;background:var(--bg);color:#111}
+    header{background:var(--blue);color:#fff;padding:1rem 0}
+    .container{max-width:1100px;margin:0 auto;padding:0 1rem}
+    nav a{color:#fff;text-decoration:none;margin-left:1rem}
+    .hero{display:flex;gap:1.25rem;align-items:center;padding:2.25rem 0}
+    .hero h1{margin:0;font-size:1.75rem}
+    .hero p{margin:.5rem 0;color:#0f1724de}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
+    .card{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(12,18,35,.06)}
+    .cta{display:inline-block;background:var(--blue);color:#fff;padding:.55rem .85rem;border-radius:8px;text-decoration:none}
+    footer{color:#666;text-align:center;padding:2rem 0}
+    @media(max-width:800px){.hero{flex-direction:column;align-items:flex-start}.hero h1{font-size:1.4rem}}
   </style>
 </head>
 <body>
   <header role="banner">
-    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
-      <h1 style="margin:0;font-size:1.25rem">KENXCHANGE</h1>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:.75rem"><img src="logo.svg" alt="Logo KENXCHANGE" width="40" height="40"><strong>KENXCHANGE</strong></div>
       <nav aria-label="Navigation principale">
         <a href="index.html">Accueil</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="exchange.html">Échanger</a>
+        <a href="history.html">Historique</a>
+        <a href="dashboard.html">Tableau de bord</a>
         <a href="admin.html">Admin</a>
       </nav>
     </div>
   </header>
 
-  <main role="main">
-    <h2>Bienvenue</h2>
-    <p>Cette page est une version minimale pour que le site fonctionne sous GitHub Pages.</p>
+  <main class="container">
+    <section class="hero">
+      <div style="flex:1">
+        <h1>KENXCHANGE</h1>
+        <p><em>« Échangez vos devises simplement, rapidement et en toute transparence. »</em></p>
+        <p>KENXCHANGE est une plateforme moderne destinée à faciliter l’échange de devises et d’actifs numériques dans une interface simple et facile à utiliser. Notre objectif est de proposer une expérience claire pour suivre les demandes d’échange, consulter les taux et gérer les opérations depuis un tableau de bord intuitif.</p>
+        <p><a class="cta" href="exchange.html">Démarrer un échange</a> <a style="margin-left:.5rem" href="dashboard.html">Voir le tableau de bord</a></p>
+      </div>
+      <div style="width:320px">
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Email: <a href="mailto:togbefabrice63@gmail.com">togbefabrice63@gmail.com</a><br>WhatsApp: <a href="https://wa.me/2290167420125">+229 01 67 42 01 25</a></p>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-      <h3>Étapes rapides</h3>
-      <ul>
-        <li>Remplace ce contenu par tes pages réelles.</li>
-        <li>Si tu utilises des fichiers CSS/JS externes, utilise des chemins relatifs ou mets leur URL complète.</li>
-        <li>Teste sur mobile et vérifie la console (F12) pour détecter les erreurs réseau 404.</li>
-      </ul>
-      <p>
-        Liens utiles :
-        <a class="button" href="dashboard.html">Aller au dashboard</a>
-        <a style="margin-left:.5rem" href="admin.html">Zone admin</a>
-      </p>
-    </div>
+    <section>
+      <h2>Fonctionnalités</h2>
+      <div class="card-grid">
+        <div class="card"><h4>1. Échange de devises</h4><p>Permettre à l’utilisateur de sélectionner une devise, une devise de destination et le montant à convertir.</p></div>
+        <div class="card"><h4>2. Taux de change</h4><p>Afficher clairement le taux utilisé pour chaque opération et le montant estimé avant validation.</p></div>
+        <div class="card"><h4>3. USDT</h4><p>Section dédiée aux opérations USDT avec affichage des montants et statuts.</p></div>
+        <div class="card"><h4>4. Historique</h4><p>Afficher les demandes d’échange avec leur date, montant et statut : en attente, validée ou annulée.</p></div>
+        <div class="card"><h4>5. Tableau de bord</h4><p>Consulter rapidement les principales informations et opérations.</p></div>
+        <div class="card"><h4>6. Espace administrateur</h4><p>Interface permettant de consulter les demandes et de modifier leur statut (prototype sans transactions réelles).</p></div>
+      </div>
+    </section>
+
   </main>
 
-  <footer role="contentinfo">
-    <p>© KENXCHANGE — Site déployé sur GitHub Pages</p>
+  <footer>
+    <div class="container"><p>© KENXCHANGE — Prototype. Aucune transaction réelle n'est effectuée.</p></div>
   </footer>
-
-  <script>
-    // Petit script inoffensif pour éviter les erreurs console si d'autres scripts attendent un objet global
-    window.KENX = window.KENX || {};
-    console.log('KENXCHANGE: page chargée');
-  </script>
-  <noscript>JavaScript est désactivé : certaines fonctionnalités peuvent ne pas fonctionner.</noscript>
 </body>
 </html>

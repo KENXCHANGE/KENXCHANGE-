@@ -3,43 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>KENXCHANGE - Dashboard</title>
-  <meta name="description" content="Tableau de bord KENXCHANGE">
-  <!-- Open Graph -->
-  <meta property="og:title" content="KENXCHANGE - Dashboard">
-  <meta property="og:description" content="Tableau de bord KENXCHANGE">
-  <meta property="og:url" content="https://kenxchange.github.io/KENXCHANGE-/dashboard.html">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="KENXCHANGE - Dashboard">
-  <meta name="twitter:description" content="Tableau de bord KENXCHANGE">
-  <meta name="twitter:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
+  <title>Tableau de bord — KENXCHANGE</title>
+  <meta name="description" content="Tableau de bord utilisateur — prototype">
   <base href="/KENXCHANGE-/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
-    body{font-family:system-ui,Arial;margin:0;padding:1rem;color:#111}
-    header{background:#0b5cff;color:#fff;padding:.75rem}
-    main{max-width:980px;margin:1rem auto}
-    .panel{background:#fff;border-radius:8px;padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    a.button{display:inline-block;background:#0b5cff;color:#fff;padding:.45rem .7rem;border-radius:6px;text-decoration:none}
+    :root{--blue:#0b5cff}
+    body{font-family:Inter,system-ui,Arial;margin:0;background:#f7f8fb;color:#111}
+    .container{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+    .metric{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(12,18,35,.06)}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;margin-top:1rem}
+    th,td{padding:.6rem;border-bottom:1px solid #eef2f7;text-align:left}
+    @media(max-width:800px){.hero{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
 <body>
-  <header><div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center"><h1 style="margin:0;font-size:1.1rem">KENXCHANGE</h1><nav><a href="index.html" style="color:#fff;text-decoration:none;margin-right:1rem">Accueil</a></nav></div></header>
-  <main>
-    <h2>Dashboard</h2>
-    <div class="panel">
-      <p>Zone de démonstration — remplace ce contenu par ton tableau de bord réel.</p>
-      <ul>
-        <li>Vérifie les appels API (si tu en as) et adapte les URLs (évite les chemins absolus).</li>
-        <li>Ajoute des tests unitaires / intégration côté back si possible.</li>
-      </ul>
-      <p><a class="button" href="index.html">Retour</a></p>
+  <header style="background:var(--blue);color:#fff;padding:1rem 0"><div class="container" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:.5rem"><img src="logo.svg" alt="Logo" width="36"> <strong>KENXCHANGE</strong></div><nav><a href="index.html" style="color:#fff;text-decoration:none">Accueil</a></nav></div></header>
+  <main class="container">
+    <h2>Tableau de bord</h2>
+    <div class="metrics">
+      <div class="metric"><h3>Utilisateurs</h3><p id="users">125</p></div>
+      <div class="metric"><h3>Demandes d'échange</h3><p id="requests">48</p></div>
+      <div class="metric"><h3>Opérations terminées</h3><p id="completed">36</p></div>
+      <div class="metric"><h3>Opérations en attente</h3><p id="pending">12</p></div>
+      <div class="metric"><h3>Volume échangé</h3><p id="volume">10 500 $</p></div>
+      <div class="metric"><h3>Taux de réussite</h3><p id="success">98 %</p></div>
     </div>
+
+    <section>
+      <h3 style="margin-top:1rem">Demandes récentes</h3>
+      <table>
+        <thead><tr><th>Numéro</th><th>Utilisateur</th><th>Montant</th><th>De→Vers</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td>104</td><td>dan</td><td>50 USD</td><td>USD → USDT</td><td>En attente</td></tr>
+          <tr><td>103</td><td>charlie</td><td>300 USDT</td><td>USDT → XOF</td><td>Validée</td></tr>
+          <tr><td>102</td><td>bob</td><td>150 EUR</td><td>EUR → USDT</td><td>En attente</td></tr>
+        </tbody>
+      </table>
+    </section>
   </main>
-  <footer style="text-align:center;color:#666;margin-top:2rem">© KENXCHANGE</footer>
-  <script>console.log('Dashboard chargé');</script>
+  <footer style="text-align:center;padding:2rem 0;color:#666">© KENXCHANGE — Prototype</footer>
 </body>
 </html>

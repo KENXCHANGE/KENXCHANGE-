@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Échanger — KENXCHANGE</title>
+  <meta name="description" content="Formulaire d'échange KENXCHANGE - prototype sans transactions réelles">
+  <base href="/KENXCHANGE-/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    :root{--blue:#0b5cff}
+    body{font-family:Inter,system-ui,Arial;margin:0;background:#f7f8fb;color:#111}
+    .container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .card{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(12,18,35,.06)}
+    label{display:block;margin-top:.5rem}
+    input,select{width:100%;padding:.6rem;margin-top:.25rem;border:1px solid #e6e9ef;border-radius:6px}
+    .row{display:flex;gap:1rem}
+    .row>div{flex:1}
+    .actions{margin-top:1rem}
+    button{background:var(--blue);color:#fff;padding:.6rem .9rem;border:none;border-radius:8px}
+    @media(max-width:700px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header style="background:var(--blue);color:#fff;padding:1rem 0"><div class="container" style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:center;gap:.5rem"><img src="logo.svg" alt="Logo" width="36"> <strong>KENXCHANGE</strong></div><nav><a href="index.html" style="color:#fff;text-decoration:none">Accueil</a></nav></div></header>
+  <main class="container">
+    <div class="card">
+      <h2>Échanger des devises</h2>
+      <p>Prototype uniquement : aucun transfert réel n’est effectué. Les taux sont fictifs pour démonstration.</p>
+      <form id="exchangeForm" onsubmit="return false;">
+        <div class="row">
+          <div>
+            <label>Devise de départ
+              <select id="fromCurrency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="XOF">XOF</option>
+                <option value="USDT">USDT</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>Devise d'arrivée
+              <select id="toCurrency">
+                <option value="USDT">USDT</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="XOF">XOF</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <label>Montant
+          <input id="amount" type="number" min="0" step="0.01" value="100">
+        </label>
+        <div style="margin-top:.75rem">
+          <strong>Taux (fictif) :</strong> <span id="rate">—</span><br>
+          <strong>Montant estimé :</strong> <span id="estimated">—</span>
+        </div>
+        <div class="actions"><button type="button" onclick="computeEstimate()">Calculer l'estimation</button> <button type="button" style="margin-left:.5rem" onclick="submitExchange()">Soumettre la demande</button></div>
+      </form>
+    </div>
+
+    <section style="margin-top:1rem">
+      <h3>Information</h3>
+      <p>Les opérations sont simulées. Pour le prototype, aucune transaction financière n’est réalisée.</p>
+    </section>
+  </main>
+  <footer style="text-align:center;padding:2rem 0;color:#666">© KENXCHANGE</footer>
+
+  <script>
+    // Simple mock rates for demo only
+    const mockRates = {
+      'USD:EUR':0.92,'EUR:USD':1.09,'USD:XOF':610,'XOF:USD':0.0016,'USD:USDT':1,'USDT:USD':1,'EUR:USDT':1.08,'USDT:EUR':0.93
+    };
+
+    function computeEstimate(){
+      const from = document.getElementById('fromCurrency').value;
+      const to = document.getElementById('toCurrency').value;
+      const amount = parseFloat(document.getElementById('amount').value)||0;
+      const key = from+':'+to;
+      const rate = mockRates[key] || 1;
+      document.getElementById('rate').textContent = rate;
+      document.getElementById('estimated').textContent = (amount*rate).toLocaleString()+' '+to;
+    }
+
+    function submitExchange(){
+      // Create a local-only simulated request and show confirmation
+      computeEstimate();
+      alert('Demande d\'échange soumise (simulation). Aucune transaction réelle n\'est effectuée.');
+      console.log('Simulated exchange request', {from:document.getElementById('fromCurrency').value,to:document.getElementById('toCurrency').value,amount:document.getElementById('amount').value});
+    }
+
+    // compute default estimate on load
+    computeEstimate();
+  </script>
+</body>
+</html>

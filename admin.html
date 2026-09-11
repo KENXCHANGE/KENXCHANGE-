@@ -3,45 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>KENXCHANGE - Admin</title>
-  <meta name="description" content="Espace administration KENXCHANGE">
-  <!-- Open Graph -->
-  <meta property="og:title" content="KENXCHANGE - Admin">
-  <meta property="og:description" content="Espace administration KENXCHANGE">
-  <meta property="og:url" content="https://kenxchange.github.io/KENXCHANGE-/admin.html">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="KENXCHANGE - Admin">
-  <meta name="twitter:description" content="Espace administration KENXCHANGE">
-  <meta name="twitter:image" content="https://kenxchange.github.io/KENXCHANGE-/og-image.svg">
+  <title>Admin — KENXCHANGE (Prototype)</title>
+  <meta name="description" content="Espace administrateur de démonstration — gestion des demandes (prototype sans transactions)">
   <base href="/KENXCHANGE-/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
-    body{font-family:system-ui,Arial;margin:0;padding:1rem;color:#111}
-    header{background:#111;color:#fff;padding:.75rem}
-    main{max-width:900px;margin:1rem auto}
-    .box{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    label{display:block;margin-top:.5rem}
-    input,button{padding:.5rem;margin-top:.25rem}
+    body{font-family:Inter,system-ui,Arial;margin:0;background:#f7f8fb;color:#111}
+    .container{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+    th,td{padding:.6rem;border-bottom:1px solid #eef2f7;text-align:left}
+    button{padding:.4rem .6rem;border-radius:6px;border:none}
+    .validate{background:#16a34a;color:#fff}
+    .cancel{background:#ef4444;color:#fff}
   </style>
 </head>
 <body>
-  <header><div style="max-width:1100px;margin:0 auto"><h1 style="margin:0;font-size:1.05rem">KENXCHANGE — Admin</h1></div></header>
-  <main>
-    <div class="box">
-      <h2>Connexion admin</h2>
-      <p>Remplace ce formulaire par ton système d'authentification sécurisé.</p>
-      <form>
-        <label>Utilisateur<input type="text" name="user" /></label>
-        <label>Mot de passe<input type="password" name="pass" /></label>
-        <button type="button" onclick="alert('Login simulé')">Se connecter</button>
-      </form>
-    </div>
-    <p style="margin-top:1rem"><a href="index.html">Retour</a></p>
+  <header style="background:#111;color:#fff;padding:1rem 0"><div class="container"><strong>KENXCHANGE — Admin</strong></div></header>
+  <main class="container">
+    <h2>Interface administrateur (démo)</h2>
+    <p>Cette interface est un prototype. Aucune action ne déclenche de transaction réelle.</p>
+    <table>
+      <thead><tr><th>Numéro</th><th>Utilisateur</th><th>De</th><th>Vers</th><th>Montant</th><th>Taux</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="adminBody"></tbody>
+    </table>
   </main>
-  <footer style="text-align:center;color:#666;margin-top:2rem">© KENXCHANGE — Admin</footer>
-  <script>console.log('Admin page chargée');</script>
+  <footer style="text-align:center;padding:2rem 0;color:#666">© KENXCHANGE — Prototype</footer>
+
+  <script>
+    // Demo dataset (frontend only)
+    let operations = [
+      {id:101,user:'alice',from:'USD',to:'EUR',amount:200,taux:0.92,date:'2026-09-01',status:'completed'},
+      {id:102,user:'bob',from:'EUR',to:'USDT',amount:150,taux:1.08,date:'2026-09-06',status:'pending'},
+      {id:103,user:'charlie',from:'USDT',to:'XOF',amount:300,taux:610,date:'2026-09-08',status:'completed'},
+      {id:104,user:'dan',from:'USD',to:'USDT',amount:50,taux:1,date:'2026-09-10',status:'pending'}
+    ];
+
+    function renderAdmin(){
+      const body = document.getElementById('adminBody');
+      body.innerHTML = '';
+      operations.forEach(op=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${op.id}</td><td>${op.user}</td><td>${op.from}</td><td>${op.to}</td><td>${op.amount}</td><td>${op.taux}</td><td>${op.date}</td><td>${op.status}</td><td><button class='validate' onclick='updateStatus(${op.id},"completed")'>Valider</button> <button class='cancel' onclick='updateStatus(${op.id},"cancelled")'>Annuler</button></td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    function updateStatus(id,newStatus){
+      // Frontend-only change (prototype)
+      operations = operations.map(op=>op.id===id?{...op,status:newStatus}:op);
+      renderAdmin();
+      console.log('Operation status changed (frontend only):', {id,newStatus});
+      alert('Statut mis à jour (simulation). Aucune action financière réelle n\'a été effectuée.');
+    }
+
+    renderAdmin();
+  </script>
 </body>
 </html>
