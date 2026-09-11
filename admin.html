@@ -15,48 +15,169 @@
     button{padding:.4rem .6rem;border-radius:6px;border:none}
     .validate{background:#16a34a;color:#fff}
     .cancel{background:#ef4444;color:#fff}
+    .login{background:#fff;padding:1rem;border-radius:8px;box-shadow:0 6px 18px rgba(12,18,35,.06);max-width:420px}
+    .controls{display:flex;gap:.5rem;margin-top:.5rem}
+    .hidden{display:none}
+    .status-pill{padding:.25rem .5rem;border-radius:6px;font-size:.9rem}
   </style>
 </head>
 <body>
   <header style="background:#111;color:#fff;padding:1rem 0"><div class="container"><strong>KENXCHANGE — Admin</strong></div></header>
   <main class="container">
     <h2>Interface administrateur (démo)</h2>
-    <p>Cette interface est un prototype. Aucune action ne déclenche de transaction réelle.</p>
-    <table>
-      <thead><tr><th>Numéro</th><th>Utilisateur</th><th>De</th><th>Vers</th><th>Montant</th><th>Taux</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead>
-      <tbody id="adminBody"></tbody>
-    </table>
+
+    <!-- LOGIN -->
+    <div id="loginBox" class="login">
+      <h3>Connexion administrateur</h3>
+      <div>
+        <label>Utilisateur<br><input id="username" type="text" value="admin"></label>
+      </div>
+      <div>
+        <label>Mot de passe<br><input id="password" type="password" value="admin1234"></label>
+      </div>
+      <div class="controls">
+        <button id="loginBtn">Se connecter</button>
+        <button id="seedBtn" style="background:#f3f4f6">Seed (dev)</button>
+      </div>
+      <p id="loginMsg" style="color:#b91c1c"></p>
+      <p style="margin-top:.5rem;color:#666;font-size:.9rem">Note: pour production, définis API_BASE ci‑dessous vers ton API et désactive le seed public.</p>
+    </div>
+
+    <!-- ADMIN TABLE -->
+    <div id="adminArea" class="hidden">
+      <p>Cette interface est un prototype. Aucune action ne déclenche de transaction réelle.</p>
+      <p><button id="logoutBtn" style="background:#374151;color:#fff">Se déconnecter</button></p>
+      <table>
+        <thead><tr><th>Numéro</th><th>Utilisateur</th><th>De</th><th>Vers</th><th>Montant</th><th>Taux</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="adminBody"></tbody>
+      </table>
+    </div>
+
   </main>
   <footer style="text-align:center;padding:2rem 0;color:#666">© KENXCHANGE — Prototype</footer>
 
   <script>
-    // Demo dataset (frontend only)
-    let operations = [
-      {id:101,user:'alice',from:'USD',to:'EUR',amount:200,taux:0.92,date:'2026-09-01',status:'completed'},
-      {id:102,user:'bob',from:'EUR',to:'USDT',amount:150,taux:1.08,date:'2026-09-06',status:'pending'},
-      {id:103,user:'charlie',from:'USDT',to:'XOF',amount:300,taux:610,date:'2026-09-08',status:'completed'},
-      {id:104,user:'dan',from:'USD',to:'USDT',amount:50,taux:1,date:'2026-09-10',status:'pending'}
-    ];
+    // ===== CONFIG =====
+    // Change API_BASE to your deployed API URL when ready (no trailing /api)
+    // For local development with docker-compose (backend exposes port 3000) use: http://localhost:3000
+    // For production, set for example: https://api.yourdomain.com
+    const API_BASE = window.__KENX_API_BASE__ || (location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://your-api.example.com');
+    // End config
 
-    function renderAdmin(){
+    const loginBox = document.getElementById('loginBox');
+    const adminArea = document.getElementById('adminArea');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const seedBtn = document.getElementById('seedBtn');
+    const loginMsg = document.getElementById('loginMsg');
+
+    function getToken(){ return sessionStorage.getItem('kenx_token'); }
+    function setToken(t){ if(t) sessionStorage.setItem('kenx_token', t); else sessionStorage.removeItem('kenx_token'); }
+
+    async function apiFetch(path, opts={}){
+      const token = getToken();
+      const headers = opts.headers || {};
+      headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+      if(token) headers['Authorization'] = 'Bearer '+token;
+      const res = await fetch(API_BASE + path, {...opts, headers});
+      if(!res.ok){
+        const txt = await res.text().catch(()=>null);
+        throw new Error(res.status + ' ' + res.statusText + (txt?(': '+txt):''));
+      }
+      return res.json().catch(()=>null);
+    }
+
+    async function doLogin(){
+      loginMsg.textContent = '';
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      try{
+        const r = await fetch(API_BASE + '/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username,password}) });
+        if(!r.ok){ const j = await r.json().catch(()=>null); loginMsg.textContent = j && j.error ? j.error : 'Échec connexion'; return; }
+        const j = await r.json();
+        setToken(j.token);
+        loginBox.classList.add('hidden');
+        adminArea.classList.remove('hidden');
+        await loadOperations();
+      }catch(err){
+        console.error(err); loginMsg.textContent = 'Erreur réseau: '+err.message;
+      }
+    }
+
+    async function loadOperations(){
+      try{
+        const ops = await apiFetch('/api/operations');
+        renderOps(ops);
+      }catch(err){
+        console.error('loadOperations', err);
+        alert('Impossible de charger les opérations: '+err.message);
+      }
+    }
+
+    function renderOps(ops){
       const body = document.getElementById('adminBody');
       body.innerHTML = '';
-      operations.forEach(op=>{
+      ops.forEach(op=>{
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${op.id}</td><td>${op.user}</td><td>${op.from}</td><td>${op.to}</td><td>${op.amount}</td><td>${op.taux}</td><td>${op.date}</td><td>${op.status}</td><td><button class='validate' onclick='updateStatus(${op.id},"completed")'>Valider</button> <button class='cancel' onclick='updateStatus(${op.id},"cancelled")'>Annuler</button></td>`;
+        const statusClass = op.status === 'pending' ? 'status-pill' : op.status === 'completed' ? 'status-pill' : 'status-pill';
+        const statusText = op.status;
+        tr.innerHTML = `
+          <td>${op.id}</td>
+          <td>${op.user}</td>
+          <td>${op.from_currency}</td>
+          <td>${op.to_currency}</td>
+          <td>${op.amount}</td>
+          <td>${op.rate}</td>
+          <td>${op.date ? op.date : ''}</td>
+          <td><span class="${statusClass}">${statusText}</span></td>
+          <td>
+            <button class="validate" onclick="updateStatus(${op.id},'completed')">Valider</button>
+            <button class="cancel" onclick="updateStatus(${op.id},'cancelled')">Annuler</button>
+          </td>
+        `;
         body.appendChild(tr);
       });
     }
 
-    function updateStatus(id,newStatus){
-      // Frontend-only change (prototype)
-      operations = operations.map(op=>op.id===id?{...op,status:newStatus}:op);
-      renderAdmin();
-      console.log('Operation status changed (frontend only):', {id,newStatus});
-      alert('Statut mis à jour (simulation). Aucune action financière réelle n\'a été effectuée.');
+    async function updateStatus(id,newStatus){
+      if(!confirm('Confirmer la mise à jour du statut ?')) return;
+      try{
+        const res = await fetch(API_BASE + '/api/operations/' + id + '/status', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()}, body: JSON.stringify({status:newStatus}) });
+        if(!res.ok){ const j = await res.json().catch(()=>null); throw new Error(j && j.error ? j.error : res.statusText); }
+        const updated = await res.json();
+        alert('Statut mis à jour (simulation/prototype).');
+        await loadOperations();
+      }catch(err){
+        console.error(err); alert('Erreur mise à jour: '+err.message);
+      }
     }
 
-    renderAdmin();
+    async function doLogout(){ setToken(null); adminArea.classList.add('hidden'); loginBox.classList.remove('hidden'); }
+
+    // Dev-only: call seed endpoint (requires SEED_TOKEN set in backend env)
+    async function doSeed(){
+      if(!confirm('Lancer le seed (dev) ?')) return;
+      try{
+        const token = prompt('Entrez SEED_TOKEN (dev) :','seed-secret');
+        const res = await fetch(API_BASE + '/api/seed?token=' + encodeURIComponent(token), { method:'POST' });
+        if(!res.ok) { const j = await res.json().catch(()=>null); throw new Error(j && j.error ? j.error : res.statusText); }
+        alert('Seed exécuté — données ajoutées.');
+      }catch(err){ console.error(err); alert('Seed failed: '+err.message); }
+    }
+
+    // Expose updateStatus globally so inline onclick can call it
+    window.updateStatus = updateStatus;
+
+    loginBtn.addEventListener('click', doLogin);
+    logoutBtn.addEventListener('click', doLogout);
+    seedBtn.addEventListener('click', doSeed);
+
+    // Auto-login if token present
+    if(getToken()){
+      loginBox.classList.add('hidden');
+      adminArea.classList.remove('hidden');
+      loadOperations();
+    }
   </script>
 </body>
 </html>
