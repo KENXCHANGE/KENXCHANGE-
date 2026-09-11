@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: kenxchange
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./backend/migrations:/migrations:ro
+    ports:
+      - "5432:5432"
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/kenxchange
+      JWT_SECRET: changeme
+      SEED_ADMIN_PASSWORD: admin1234
+      SEED_TOKEN: seed-secret
+      NODE_ENV: development
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+volumes:
+  db-data:
