@@ -1,1 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KENXCHANGE - Plateforme d'Échange de Devises & Cryptomonnaies</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <i class="fas fa-coins"></i>
+                <span>KENXCHANGE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#convertisseur">Convertisseur</a></li>
+                <li><a href="#marche">Marché</a></li>
+                <li><a href="#historique">Historique</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1>Échange de Devises & Cryptomonnaies</h1>
+            <p>Convertissez USD, EUR et toutes les cryptomonnaies en temps réel</p>
+            <button class="btn btn-primary" onclick="scrollToConverter()">Commencer</button>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- Convertisseur Section -->
+    <section id="convertisseur" class="converter-section">
+        <div class="container">
+            <h2>Convertisseur de Devises</h2>
+            
+            <div class="converter-container">
+                <div class="currency-box">
+                    <label>De</label>
+                    <div class="input-group">
+                        <input type="number" id="amount" placeholder="Montant" value="1" min="0" step="0.01">
+                        <select id="fromCurrency" onchange="updateConverter()">
+                            <option value="usd">USD - Dollar</option>
+                            <option value="eur">EUR - Euro</option>
+                            <option value="btc">BTC - Bitcoin</option>
+                            <option value="eth">ETH - Ethereum</option>
+                            <option value="xrp">XRP - Ripple</option>
+                            <option value="bnb">BNB - Binance Coin</option>
+                            <option value="ada">ADA - Cardano</option>
+                            <option value="sol">SOL - Solana</option>
+                            <option value="doge">DOGE - Dogecoin</option>
+                            <option value="ltc">LTC - Litecoin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="swap-btn" onclick="swapCurrencies()">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+
+                <div class="currency-box">
+                    <label>Vers</label>
+                    <div class="input-group">
+                        <input type="number" id="result" placeholder="Résultat" readonly>
+                        <select id="toCurrency" onchange="updateConverter()">
+                            <option value="eur">EUR - Euro</option>
+                            <option value="usd">USD - Dollar</option>
+                            <option value="btc">BTC - Bitcoin</option>
+                            <option value="eth">ETH - Ethereum</option>
+                            <option value="xrp">XRP - Ripple</option>
+                            <option value="bnb">BNB - Binance Coin</option>
+                            <option value="ada">ADA - Cardano</option>
+                            <option value="sol">SOL - Solana</option>
+                            <option value="doge">DOGE - Dogecoin</option>
+                            <option value="ltc">LTC - Litecoin</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exchange-rate" id="exchangeRate"></div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="marche" class="market-section">
+        <div class="container">
+            <h2>Taux de Marché</h2>
+            <div class="market-grid" id="marketGrid">
+                <!-- Les cryptos seront chargées ici par JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+        <div class="container">
+            <h2>Tendances 24h</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historical Data -->
+    <section id="historique" class="history-section">
+        <div class="container">
+            <h2>Historique des Échanges</h2>
+            <div class="history-controls">
+                <button class="btn btn-secondary" onclick="clearHistory()">Effacer l'historique</button>
+            </div>
+            <div class="history-table" id="historyTable">
+                <p class="empty-state">Aucun échange enregistré</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 KENXCHANGE. Données en temps réel via CoinGecko API</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/converter.js"></script>
+    <script src="js/market.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/history.js"></script>
+</body>
+</html>
