@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Points crawlers to the sitemap
+Sitemap: https://kenxchange.github.io/KENXCHANGE-/sitemap.xml
